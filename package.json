@@ -1,0 +1,26 @@
+{
+  "name": "guessy-guessy",
+  "version": "1.0.0",
+  "description": "An on-line game where you have to guess a word based on its description",
+  "main": "server.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-es2015": "^6.16.0",
+    "gulp": "^3.9.1",
+    "jshint": "^2.9.4",
+    "pm2": "^2.3.0"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/pm2 start --no-daemon process.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jkulak/fast-website.git"
+  },
+  "author": "Jakub Kułak <jakub.kulak@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jkulak/fast-website/issues"
+  },
+  "homepage": "https://github.com/jkulak/fast-website#readme"
+}

@@ -1,0 +1,19 @@
+{
+    "apps" : [{
+        "name"        : "guessy-server",
+        "script"      : "./server.js",
+        "watch": ["lib"],
+        "watch_options": {
+            "usePolling": true,
+            "followSymlinks": false
+        },
+        "max_memory_restart": "150M",
+        "env": {
+          "NODE_ENV": "development",
+          "DEBUG": ""
+        },
+        "env_production" : {
+           "NODE_ENV": "production"
+        }
+    }]
+}
