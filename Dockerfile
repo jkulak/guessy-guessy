@@ -1,5 +1,7 @@
 FROM mhart/alpine-node:7.4
 
+EXPOSE 8033
+
 RUN mkdir /app
 WORKDIR /app
 ENV NODE_ENV development

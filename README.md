@@ -1,17 +1,25 @@
 # guessy-guessy
 
-The code comes with a simple, static Node.js server - so you can deploy it right away or run it locally. Since it is a HTML + JS + CSS project - you sholud be able to double click the index.html file and see the workign version in your browser.
+The code comes with a simple, static Node.js server - so you can deploy it right away or run it locally. Also, since it is only a HTML + JS + CSS project - you sholud be able to double click the index.html file and see the working version in your browser.
 
-## Development
+## tl;dr
+
+1.  Have Docker 🐳 installed on your system
+2.  `git clone https://github.com/jkulak/guessy-guessy`
+3.  `cd guessy-guessy`
+4.  `./dev.sh` (build the Docker image, run the container and login)
+5.  `npm install` (inside the container, to install dependencies in the mounted directory)
+6.  `npm start` (optional, to run the server, and open: <http://localhost:8033>)
+
+If you don't have Docker, just clone the repository and double click the `src/index.html` file to run the game in your browser.
+
+## Development environment
 
 The only dependency on your system is Docker 🐳. All tools (node, npm, gulp, babel, pm2), are installed locally inside the container. Login to the container to use all the tools.
 
-### tl;dr  
+### Development environment tools
 
-1.  Run provided `./dev.sh` script to build the image and run the container
-2.  Run `npm install` after being logged in
-
-*Disclaimer:* `npm install` is performed when the image is being built (see inside the `Dockerfile`) and it's necessary to run the application from the container. But! When running the container for development purposes, we mount our directory inside the container - therefore overwriting the original content (so there is no `node_modules` anymore).
+-   `npm start` - will run `start` command from `package.json` that runs `pm2 start --no-daemon process.json` and will watch `./src` for changes and reload the server when needed
 
 ### Manually build and run the container
 
@@ -22,6 +30,8 @@ The only dependency on your system is Docker 🐳. All tools (node, npm, gulp, b
     -   mount your current directory as `/app` inside the container `-v`
     -   run the sh shell `sh`, and allow you to interact with it `-ti`
     -   `-l` is needed so that aliases defined in the Dockerfile are available
+
+Run `docker exec -ti guessy-server sh -l` to login to an existing container (in case you want to work in more than one terminal window).
 
 ## Questions
 

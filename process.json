@@ -1,8 +1,8 @@
 {
     "apps" : [{
         "name"        : "guessy-server",
-        "script"      : "./server.js",
-        "watch": ["lib"],
+        "script"      : "./server/server.js",
+        "watch": ["server"],
         "watch_options": {
             "usePolling": true,
             "followSymlinks": false
