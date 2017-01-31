@@ -20,5 +20,5 @@ if [ ! "$(docker ps -q -f name=$SERVICE_NAME)" ]; then
         docker rm $SERVICE_NAME
     fi
     # run your container
-    docker run --rm -ti --name $SERVICE_NAME -v $(pwd):/app -p $SERVICE_PORT:8033 jkulak/$SERVICE_NAME sh -l
+    docker run --rm -ti --name $SERVICE_NAME -v $(pwd):/app -p $SERVICE_PORT:8033 -p 35729:35729 jkulak/$SERVICE_NAME sh -l
 fi

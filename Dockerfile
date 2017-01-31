@@ -7,7 +7,7 @@ WORKDIR /app
 ENV NODE_ENV development
 
 COPY package.json /app
-RUN npm install
+RUN npm install --production
 
 COPY . /app
 # RUN node_modules/.bin/gulp build-for-production

@@ -1,15 +1,21 @@
 'use strict';
 
+// Dependencies
 const gulp = require('gulp'),
-    // rename = require('gulp-rename'),
-    del = require('del'),
+    // del = require('del'),
     autoprefixer = require('gulp-autoprefixer'),
     cssnano = require('gulp-cssnano'),
     livereload = require('gulp-livereload'),
-    htmlreplace = require('gulp-html-replace');
+    htmlreplace = require('gulp-html-replace'),
+    sass = require('gulp-sass'),
+    concat = require('gulp-concat'),
+    sourcemaps = require('gulp-sourcemaps');
+
+// Configuration
+const dist_dir = 'src/dist/';
 
 gulp.task('default', ['clean'], () => {
-    gulp.start('styles', 'images', 'scripts');
+    gulp.start('styles', 'scripts');
 });
 
 gulp.task('update-html-dependencies', () => {
@@ -20,36 +26,35 @@ gulp.task('update-html-dependencies', () => {
         }));
 });
 
+gulp.task('sass', function () {
+    return gulp.src('src/sass/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('src/style'));
+});
+
 gulp.task('styles', () => {
-    return gulp.src('public/css/*.css')
+
+    return gulp.src('src/style/**/*.css')
+        .pipe(sourcemaps.init())
         .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
+            browsers: ['last 20 versions'],
             cascade: false
         }))
-        // .pipe(rename({
-        //     suffix: '.min'
-        // }))
+        .pipe(concat('all.css'))
         .pipe(cssnano())
-        .pipe(gulp.dest('dist/assets/css'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(dist_dir))
         .pipe(livereload());
 });
 
 gulp.task('scripts', () => {
-    return true;
-});
-
-gulp.task('images', () => {
-    return gulp.src('public/images/**/*')
-        .pipe(gulp.dest('dist/assets/img'))
+    return gulp.src('src/app/**/*.js')
+        .pipe(gulp.dest(dist_dir))
         .pipe(livereload());
 });
 
-gulp.task('clean', () => {
-    return del(['dist/assets/css', 'dist/assets/js', 'dist/assets/img']);
-});
-
 gulp.task('build-for-production', ['clean'], () => {
-    gulp.start('styles', 'images', 'update-html-dependencies');
+    gulp.start('styles', 'scripts', 'update-html-dependencies');
 });
 
 // Watch
@@ -62,12 +67,12 @@ gulp.task('watch', () => {
     // Create LiveReload server
     livereload.listen();
 
+    // Watch .sass files
+    gulp.watch('src/sass/**/*.scss', ['sass']);
+
     // Watch .css files
-    gulp.watch('public/css/*.css', ['styles']).on('change', onChange);
+    gulp.watch('src/style/**/*.css', ['styles']).on('change', onChange);
 
     // Watch .js files
-    gulp.watch('public/js/*.js', ['scripts']).on('change', onChange);
-
-    // Watch image files
-    gulp.watch('public/images/*', ['images']).on('change', onChange);
+    gulp.watch('src/app/**/*.js', ['scripts']).on('change', onChange);
 });

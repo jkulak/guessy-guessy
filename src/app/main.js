@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    // c
+
     const game = {
         // number of games played
         count: 0,
@@ -28,7 +30,7 @@
             this.count++;
             this.points = 0;
 
-            answers.innerHTML = "";
+            answers.innerHTML = '';
 
             updateStats();
             nextQuestion();
@@ -76,8 +78,8 @@
             game.points++;
         }
 
-        const li = document.createElement("li");
-        li.classList.add(result ? "good" : "bad");
+        const li = document.createElement('li');
+        li.classList.add(result ? 'good' : 'bad');
         li.appendChild(document.createTextNode(`${q.phrase}: ${q.description}`));
         answers.insertBefore(li, answers.childNodes[0]);
 
