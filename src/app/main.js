@@ -1,129 +1,88 @@
-(function () {
-    'use strict';
+'use strict';
 
-    // and what?
+const displayQuestion = q => {
 
-    const game = {
-        // number of games played
-        count: 0,
-        points: 0,
-        questions: {},
-        current: {},
+    answerInput.value = '';
+    answerInput.focus();
 
-        settings: {
-            answerTiemLimit: 30
-        },
+    definitionDesc.innerHTML = q.description;
+    hintDesc.innerHTML = q.phrase;
+};
 
-        init: () => {
-            const endpoint = 'dict-a.json';
+// Select random questions from the questions object
+function nextQuestion() {
 
-            fetch(endpoint)
-                .then(data => data.json())
-                .then(data => {
-                    game.questions = data;
-                    // hide loading
-                });
-        },
+    let count = 0,
+        result = null;
 
-        // Start a new game
-        new: function () {
-            this.count++;
-            this.points = 0;
+    for (let phrase in game.questions) {
+        if (Math.random() < 1 / ++count) {
+            result = phrase;
+        }
+    }
 
-            answers.innerHTML = '';
-
-            updateStats();
-            nextQuestion();
-        },
-
-
+    game.current = {
+        phrase: result,
+        description: game.questions[result]
     };
 
-    const displayQuestion = q => {
+    displayQuestion(game.current);
+}
 
-        answerInput.value = '';
-        answerInput.focus();
+function updateStats() {
+    ctrlPoints.innerHTML = game.points;
+}
 
-        definitionDesc.innerHTML = q.description;
-        hintDesc.innerHTML = q.phrase;
-    };
+function logAnswer(result, q) {
 
-    // Select random questions from the questions object
-    function nextQuestion() {
-
-        let count = 0,
-            result = null;
-
-        for (let phrase in game.questions) {
-            if (Math.random() < 1 / ++count) {
-                result = phrase;
-            }
-        }
-
-        game.current = {
-            phrase: result,
-            description: game.questions[result]
-        };
-
-        displayQuestion(game.current);
+    if (result) {
+        game.points++;
     }
 
-    function updateStats() {
-        ctrlPoints.innerHTML = game.points;
-    }
+    const li = document.createElement('li');
+    li.classList.add(result ? 'good' : 'bad');
+    li.appendChild(document.createTextNode(`${q.phrase}: ${q.description}`));
+    answers.insertBefore(li, answers.childNodes[0]);
 
-    function logAnswer(result, q) {
+    updateStats();
+}
 
-        if (result) {
-            game.points++;
-        }
+function skipQuestion() {
 
-        const li = document.createElement('li');
-        li.classList.add(result ? 'good' : 'bad');
-        li.appendChild(document.createTextNode(`${q.phrase}: ${q.description}`));
-        answers.insertBefore(li, answers.childNodes[0]);
+    logAnswer(false, game.current);
+    nextQuestion();
+}
 
-        updateStats();
-    }
+function checkAnswer() {
 
-    function skipQuestion() {
-
-        logAnswer(false, game.current);
+    if (answerInput.value.toLowerCase() === game.current.phrase.toLowerCase()) {
+        logAnswer(true, game.current);
         nextQuestion();
     }
+}
 
-    function checkAnswer() {
+// Assign controls to js consts
+const answerInput = document.querySelector('.answer');
+const definitionDesc = document.querySelector('.definition');
+const hintDesc = document.querySelector('.hint');
+const answers = document.querySelector('.answers');
+const ctrlPoints = document.querySelector('.points');
 
-        if (answerInput.value.toLowerCase() === game.current.phrase.toLowerCase()) {
-            logAnswer(true, game.current);
-            nextQuestion();
-        }
-    }
+// Bind actions to controls
+document.querySelector('.control-newgame').onclick = function () {
+    game.new();
+    return false;
+};
 
-    // Assign controls to js consts
-    const answerInput = document.querySelector('.answer');
-    const definitionDesc = document.querySelector('.definition');
-    const hintDesc = document.querySelector('.hint');
-    const answers = document.querySelector('.answers');
-    const ctrlPoints = document.querySelector('.points');
+document.querySelector('.answer-form').onsubmit = function () {
+    return false;
+};
 
-    // Bind actions to controls
-    document.querySelector('.control-newgame').onclick = function () {
-        game.new();
-        return false;
-    };
+document.querySelector('.skip').onclick = function () {
+    skipQuestion();
+    return false;
+};
 
-    document.querySelector('.answer-form').onsubmit = function () {
-        return false;
-    };
+answerInput.addEventListener('keyup', checkAnswer);
 
-    document.querySelector('.skip').onclick = function () {
-        skipQuestion();
-        return false;
-    };
-
-    answerInput.addEventListener('keyup', checkAnswer);
-
-    game.init();
-
-})();
+game.init();

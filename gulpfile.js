@@ -15,39 +15,36 @@ const gulp = require('gulp'),
     uglify = require('gulp-uglify');
 
 // Configuration
-const dist_dir = 'build/';
-
-gulp.task('default', ['clean'], () => {
-    gulp.start('styles', 'scripts');
-});
+const DEST = 'build/';
+const SRC = 'src/';
 
 gulp.task('clean', () => {
-    return del(dist_dir);
+    return del(DEST + '**');
 });
 
 gulp.task('update-html-dependencies', () => {
-    gulp.src('src/index.html')
+    gulp.src(SRC + 'index.html')
         .pipe(htmlreplace({
             css: 'all.css',
             js: 'all.js'
         }))
-        .pipe(gulp.dest(dist_dir));
+        .pipe(gulp.dest(DEST));
 });
 
 gulp.task('sass', () => {
-    return gulp.src('src/sass/**/*.scss')
+    return gulp.src(SRC + 'sass/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('src/style'));
 });
 
 gulp.task('resources', () => {
-    return gulp.src('src/dict-a.json')
-        .pipe(gulp.dest(dist_dir));
+    return gulp.src(SRC + 'dict-a.json')
+        .pipe(gulp.dest(DEST));
 });
 
 gulp.task('styles', () => {
 
-    return gulp.src('src/style/**/*.css')
+    return gulp.src(SRC + 'style/**/*.css')
         .pipe(sourcemaps.init())
         .pipe(autoprefixer({
             browsers: ['last 5 versions'],
@@ -56,12 +53,12 @@ gulp.task('styles', () => {
         .pipe(concat('all.css'))
         .pipe(cssnano())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(dist_dir))
+        .pipe(gulp.dest(DEST))
         .pipe(livereload());
 });
 
 gulp.task('scripts', () => {
-    return gulp.src('src/**/*.js')
+    return gulp.src(SRC + '**/*.js')
         .pipe(sourcemaps.init())
         .pipe(babel({
             presets: ['es2015']
@@ -74,7 +71,7 @@ gulp.task('scripts', () => {
         }))
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(dist_dir))
+        .pipe(gulp.dest(DEST))
         .pipe(livereload());
 });
 
@@ -91,7 +88,7 @@ gulp.task('watch', () => {
 
     // Create LiveReload server
     livereload.listen();
-    gulp.watch('src/sass/**/*.scss', ['sass']);
-    gulp.watch('src/style/**/*.css', ['styles']).on('change', onChange);
-    gulp.watch('src/app/**/*.js', ['scripts']).on('change', onChange);
+    gulp.watch(SRC + 'sass/**/*.scss', ['sass']);
+    gulp.watch(SRC + 'style/**/*.css', ['styles']).on('change', onChange);
+    gulp.watch(SRC + 'app/**/*.js', ['scripts']).on('change', onChange);
 });
