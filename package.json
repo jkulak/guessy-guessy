@@ -21,7 +21,7 @@
     "jshint": "^2.9.4"
   },
   "scripts": {
-    "start": "./node_modules/.bin/pm2 start --no-daemon process.json"
+    "start": "./node_modules/.bin/pm2 start --no-daemon process.json --env production"
   },
   "repository": {
     "type": "git",

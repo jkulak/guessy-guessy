@@ -4,7 +4,7 @@ EXPOSE 8033
 
 RUN mkdir /app
 WORKDIR /app
-ENV NODE_ENV development
+ENV NODE_ENV production
 
 COPY package.json /app
 RUN npm install --production

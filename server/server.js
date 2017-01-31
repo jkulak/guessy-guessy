@@ -10,6 +10,10 @@ const path = require('path');
 
 const root_dir = (process.env.NODE_ENV === 'production') ? 'build/' : 'src/';
 
+console.log('NODE_ENV', process.env.NODE_ENV);
+console.log('root_dir', root_dir);
+
+
 // You can pass the parameter in the command line. e.g. node static_server.js 3000
 const port = process.argv[2] || 8033;
 http.createServer(function (req, res) {
