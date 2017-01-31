@@ -8,7 +8,7 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 
-const root_dir = 'src/';
+const root_dir = (process.env.NODE_ENV === 'production') ? 'build/' : 'src/';
 
 // You can pass the parameter in the command line. e.g. node static_server.js 3000
 const port = process.argv[2] || 8033;

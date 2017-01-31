@@ -2,7 +2,7 @@
 
 // Dependencies
 const gulp = require('gulp'),
-    // del = require('del'),
+    del = require('del'),
     autoprefixer = require('gulp-autoprefixer'),
     cssnano = require('gulp-cssnano'),
     livereload = require('gulp-livereload'),
@@ -12,21 +12,26 @@ const gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps');
 
 // Configuration
-const dist_dir = 'src/dist/';
+const dist_dir = 'build/';
 
 gulp.task('default', ['clean'], () => {
     gulp.start('styles', 'scripts');
 });
 
-gulp.task('update-html-dependencies', () => {
-    gulp.src('lib/templates/*.html')
-        .pipe(htmlreplace({
-            'css': '/s/css/main.min.css',
-            'js': '/s/js/main.min.js'
-        }));
+gulp.task('clean', () => {
+    return del(dist_dir);
 });
 
-gulp.task('sass', function () {
+gulp.task('update-html-dependencies', () => {
+    gulp.src('src/index.html')
+        .pipe(htmlreplace({
+            css: 'all.css',
+            js: 'all.js'
+        }))
+        .pipe(gulp.dest(dist_dir));
+});
+
+gulp.task('sass', () => {
     return gulp.src('src/sass/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('src/style'));
@@ -37,7 +42,7 @@ gulp.task('styles', () => {
     return gulp.src('src/style/**/*.css')
         .pipe(sourcemaps.init())
         .pipe(autoprefixer({
-            browsers: ['last 20 versions'],
+            browsers: ['last 5 versions'],
             cascade: false
         }))
         .pipe(concat('all.css'))
@@ -48,13 +53,16 @@ gulp.task('styles', () => {
 });
 
 gulp.task('scripts', () => {
+    // use babel to compile es6 -> ecma 2015
+    // concat all files?
+    // add source maps
     return gulp.src('src/app/**/*.js')
         .pipe(gulp.dest(dist_dir))
         .pipe(livereload());
 });
 
 gulp.task('build-for-production', ['clean'], () => {
-    gulp.start('styles', 'scripts', 'update-html-dependencies');
+    gulp.start('sass', 'styles', 'scripts', 'update-html-dependencies');
 });
 
 // Watch
@@ -66,13 +74,7 @@ gulp.task('watch', () => {
 
     // Create LiveReload server
     livereload.listen();
-
-    // Watch .sass files
     gulp.watch('src/sass/**/*.scss', ['sass']);
-
-    // Watch .css files
     gulp.watch('src/style/**/*.css', ['styles']).on('change', onChange);
-
-    // Watch .js files
     gulp.watch('src/app/**/*.js', ['scripts']).on('change', onChange);
 });
