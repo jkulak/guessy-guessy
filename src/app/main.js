@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    // c
+    // and what?
 
     const game = {
         // number of games played
@@ -14,7 +14,7 @@
             answerTiemLimit: 30
         },
 
-        init: function () {
+        init: () => {
             const endpoint = 'dict-a.json';
 
             fetch(endpoint)
@@ -39,14 +39,14 @@
 
     };
 
-    function displayQuestion(q) {
+    const displayQuestion = q => {
 
         answerInput.value = '';
         answerInput.focus();
 
         definitionDesc.innerHTML = q.description;
         hintDesc.innerHTML = q.phrase;
-    }
+    };
 
     // Select random questions from the questions object
     function nextQuestion() {

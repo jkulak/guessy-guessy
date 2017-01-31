@@ -9,7 +9,10 @@ const gulp = require('gulp'),
     htmlreplace = require('gulp-html-replace'),
     sass = require('gulp-sass'),
     concat = require('gulp-concat'),
-    sourcemaps = require('gulp-sourcemaps');
+    sourcemaps = require('gulp-sourcemaps'),
+    babel = require('gulp-babel'),
+    minify = require('gulp-minify'),
+    uglify = require('gulp-uglify');
 
 // Configuration
 const dist_dir = 'build/';
@@ -37,6 +40,11 @@ gulp.task('sass', () => {
         .pipe(gulp.dest('src/style'));
 });
 
+gulp.task('resources', () => {
+    return gulp.src('src/dict-a.json')
+        .pipe(gulp.dest(dist_dir));
+});
+
 gulp.task('styles', () => {
 
     return gulp.src('src/style/**/*.css')
@@ -53,16 +61,25 @@ gulp.task('styles', () => {
 });
 
 gulp.task('scripts', () => {
-    // use babel to compile es6 -> ecma 2015
-    // concat all files?
-    // add source maps
-    return gulp.src('src/app/**/*.js')
+    return gulp.src('src/**/*.js')
+        .pipe(sourcemaps.init())
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(concat('all.js'))
+        .pipe(minify({
+            ext: {
+                min: '.js'
+            }
+        }))
+        .pipe(uglify())
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(dist_dir))
         .pipe(livereload());
 });
 
-gulp.task('build-for-production', ['clean'], () => {
-    gulp.start('sass', 'styles', 'scripts', 'update-html-dependencies');
+gulp.task('build', ['clean'], () => {
+    gulp.start('sass', 'styles', 'scripts', 'update-html-dependencies', 'resources');
 });
 
 // Watch
