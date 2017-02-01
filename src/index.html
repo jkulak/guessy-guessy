@@ -7,7 +7,14 @@
     <title>Guessy-Guessy</title>
     <meta name="description" content="Guess a word based on its dictionary description">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Schoolbell" rel="stylesheet" type="text/css">
+
     <!-- build:css -->
+    <link rel="stylesheet" href="style/normalize.css">
     <link rel="stylesheet" href="style/main.css">
     <!-- endbuild -->
 </head>
@@ -16,26 +23,31 @@
 
     <div class="container">
 
-        <div class="control-panel">
-            <a class="control-newgame" href="#">Start new game</a>
+        <h1>Guessy-Guessy</h1>
+
+        <div class="control panel">
+            <a class="control-newgame" href="#">Start new game</a> |
             <a class="control-stop" href="#">Stop</a>
         </div>
 
-        <div class="stats">
-            <div>points: <span class="points">0</span></div>
-            <div><span class="timer">0</span>s</div>
+        <div class="stats panel">
+            <div>
+                <div>points: </div><span class="points">0</span></div>
+            <div>
+                <div>remaining time:</div><span class="timer">0</span>s
+            </div>
         </div>
 
-        <div class="definition">Here we will have a definition...</div>
-        <div class="hint">hint</div>
-
-        <form class="answer-form">
-            <label for="answer">The above, is a definition of...</label>
+        <form class="answer-form panel">
+            <!-- <label for="answer">The above, is a definition of...</label> -->
             <input type="text" id="answer" class="answer" placeholder="Your answer..." autocomplete="off">
             <button type="button" class="skip">Skip</button>
         </form>
 
-        <ul class="answers">
+        <div class="definition panel">Here we will have a definition...</div>
+        <div class="hint">hint</div>
+
+        <ul class="answers panel">
             <li>...</li>
         </ul>
 
