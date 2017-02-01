@@ -1,6 +1,6 @@
 html {
   box-sizing: border-box;
-  background: #65fffa;
+  background: #6a6aaf;
   font-family: 'helvetica neue';
   font-size: 20px;
   font-weight: 200; }
@@ -15,7 +15,6 @@ input {
 .container {
   margin: 0 auto;
   max-width: 480px;
-  border: 1px dashed #3f54d1;
   padding: 10px; }
 
 .definition {
@@ -63,13 +62,14 @@ span.population {
 
 a {
   color: black;
-  background: rgba(0, 0, 0, 0.1);
-  text-decoration: none; }
+  background: rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  padding: 10px; }
 
 .control-panel {
   margin-bottom: 20px;
-  border-bottom: 5px solid #4e67ff; }
+  border-bottom: 5px solid #436f3d; }
 
 .stats {
   margin-bottom: 20px;
-  border-bottom: 5px solid #4e67ff; }
+  border-bottom: 5px solid #436f3d; }

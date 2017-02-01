@@ -2,7 +2,6 @@
 
 The code comes with a simple, static Node.js server - so you can deploy it right away or run it locally. Also, since it is only a HTML + JS + CSS project - you sholud be able run it by double clicking the `src/index.html` file after compiling the `src/sass/main.scss` file to `src/style/main.css`.
 
-
 ## Run the container
 
 ### tl;dr

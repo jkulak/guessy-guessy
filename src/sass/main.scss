@@ -1,4 +1,4 @@
-$primary-color: #65fffa;
+$primary-color: #6a6aaf;
 
 html {
   box-sizing: border-box;
@@ -18,7 +18,6 @@ input {
 .container {
     margin: 0 auto;
     max-width: 480px;
-    border: 1px dashed #3f54d1;
     padding: 10px;
 }
 
@@ -75,16 +74,17 @@ span.population {
 
 a {
   color:black;
-  background:rgba(0,0,0,0.1);
+  background:rgba(0,0,0,0.2);
   text-decoration: none;
+  padding: 10px;
 }
 
 .control-panel {
     margin-bottom: 20px;
-    border-bottom: 5px solid #4e67ff;
+    border-bottom: 5px solid #436f3d;
 }
 
 .stats {
     margin-bottom: 20px;
-    border-bottom: 5px solid #4e67ff;
+    border-bottom: 5px solid #436f3d;
 }
