@@ -12,7 +12,7 @@ const game = {
     },
 
     init: () => {
-        const endpoint = 'dict-a.json';
+        const endpoint = 'dict-easy.json';
 
         fetch(endpoint)
             .then(data => data.json())

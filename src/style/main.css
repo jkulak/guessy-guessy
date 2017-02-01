@@ -37,7 +37,10 @@ a {
 .stats span {
   font-family: 'Lobster', arial, serif;
   font-size: 4em;
-  color: white;
+  color: white; }
+
+.stats span {
+  display: block;
   text-align: center; }
 
 .answer {
