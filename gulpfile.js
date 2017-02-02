@@ -17,21 +17,21 @@ const gulp = require('gulp'),
 // Configuration
 const root = {
     src: 'src/',
-    dest: 'build/',
+    dest: 'docs/',
 };
 
 const src = {
     sass: root.src + 'sass/',
     css: root.src + 'style/',
     scripts: root.src + 'app/',
-    images: root.src + 'images/',
+    images: root.src + 'imgs/',
     tmpl: root.src
 };
 
 const dest = {
     css: root.dest + 's/',
     scripts: root.dest + 'js/',
-    images: root.dest + 'img/',
+    images: root.dest + 'imgs/',
     tmpl: root.dest
 };
 
@@ -50,8 +50,13 @@ gulp.task('update-html', () => {
 });
 
 gulp.task('move-resources', () => {
-    return gulp.src(root.src + 'dict-a.json')
+    return gulp.src(root.src + '**/*.json')
         .pipe(gulp.dest(root.dest));
+});
+
+gulp.task('images', () => {
+    return gulp.src(src.images + '**/*.png')
+        .pipe(gulp.dest(dest.images));
 });
 
 gulp.task('sass', () => {
@@ -91,7 +96,7 @@ gulp.task('scripts', () => {
 });
 
 gulp.task('build', ['clean'], () => {
-    gulp.start('styles', 'scripts', 'update-html', 'move-resources');
+    gulp.start('styles', 'scripts', 'images', 'update-html', 'move-resources');
 });
 
 // Watch

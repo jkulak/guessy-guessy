@@ -1,6 +1,6 @@
 body {
   box-sizing: border-box;
-  background: #a5b690 url("/imgs/bg.png") repeat;
+  background: #a5b690 url("../imgs/bg.png") repeat;
   font-family: "Schoolbell", serif;
   font-size: 2em; }
 
@@ -45,8 +45,9 @@ a {
 
 .answer {
   outline: 0;
-  border: 4px solid #F7F7F7;
-  border-radius: 5px; }
+  border: 4px solid #d1d1d1;
+  padding: 10px;
+  font-size: 0.9em; }
 
 .answers {
   margin: 0;
@@ -60,8 +61,7 @@ a {
   padding: 20px;
   transition: background 0.2s;
   display: flex;
-  justify-content: space-between;
-  text-transform: capitalize; }
+  justify-content: space-between; }
 
 .answers li.bad {
   background: linear-gradient(to top, #ff5060 0%, #ffa9a4 100%); }

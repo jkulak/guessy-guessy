@@ -2,16 +2,19 @@
     'use strict';
 
     const game = {
-        // number of games played
-        count: 0,
-        points: 0,
-        questions: {},
-        current: {},
 
+        // Number of games played
+        count: 0,
+
+        // Number of points in current game
+        points: 0,
+
+        // Game settings
         settings: {
             answerTiemLimit: 30
         },
 
+        // Init (bootstrap) the game
         init: () => {
             const endpoint = 'dict-easy.json';
 
@@ -33,8 +36,6 @@
             updateStats();
             nextQuestion();
         },
-
-
     };
 
     const displayQuestion = q => {
@@ -47,7 +48,7 @@
     };
 
     // Select random questions from the questions object
-    function nextQuestion() {
+    const nextQuestion = () => {
 
         let count = 0,
             result = null;
@@ -64,13 +65,13 @@
         };
 
         displayQuestion(game.current);
-    }
+    };
 
-    function updateStats() {
+    const updateStats = () => {
         ctrlPoints.innerHTML = game.points;
-    }
+    };
 
-    function logAnswer(result, q) {
+    const logAnswer = (result, q) => {
 
         if (result) {
             game.points++;
@@ -82,21 +83,21 @@
         answers.insertBefore(li, answers.childNodes[0]);
 
         updateStats();
-    }
+    };
 
-    function skipQuestion() {
+    const skipQuestion = () => {
 
         logAnswer(false, game.current);
         nextQuestion();
-    }
+    };
 
-    function checkAnswer() {
+    const checkAnswer = () => {
 
         if (answerInput.value.toLowerCase() === game.current.phrase.toLowerCase()) {
             logAnswer(true, game.current);
             nextQuestion();
         }
-    }
+    };
 
     // Assign controls to js consts
     const answerInput = document.querySelector('.answer');
@@ -121,6 +122,8 @@
     };
 
     answerInput.addEventListener('keyup', checkAnswer);
+
+    // Init the game
     game.init();
 
 })();
