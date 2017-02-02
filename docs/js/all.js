@@ -1,2 +1,239 @@
-"use strict";var game={count:0,settings:{answerTiemLimit:10},currentGame:{points:0,question:0},currentQuestion:{timeLeft:0},questonsFile:"dict-easy.json",timer:null,debug:!1,init:function(){var e=game.questonsFile;fetch(e).then(function(e){return e.json()}).then(function(e){game.questions=e})},new:function(){game.count++,game.currentGame={points:0,question:0},answers.innerHTML="",game.updateStats(),game.enableControls(),game.nextQuestion()},stop:function(){clearInterval(this.timer),game.disableControls()},iterate:function(){game.currentQuestion.timeLeft--,game.updateStats(),game.revealHint(),game.currentQuestion.timeLeft<1&&(game.logAnswer(!1),game.nextQuestion())},revealHint:function(){var e=game.currentQuestion.phrase,t=Math.floor(e.length/game.settings.answerTiemLimit*(game.settings.answerTiemLimit-game.currentQuestion.timeLeft)),n=new Array(e.length+1).join("*");playAnswerInput.placeholder=e.substr(0,t)+n.slice(t)},addPoints:function(){game.currentGame.points+=game.currentQuestion.timeLeft},nextQuestion:function(){var e=0,t=null;for(var n in game.questions)Math.random()<1/++e&&(t=n);game.currentQuestion={phrase:t,description:game.questions[t],timeLeft:game.settings.answerTiemLimit},clearInterval(game.timer),game.timer=setInterval(game.iterate,1e3),game.currentGame.question++,game.updateStats(),game.displayQuestion()},skipQuestion:function(){game.logAnswer(!1),game.nextQuestion()},checkAnswer:function(){playAnswerInput.value.toLowerCase()===game.currentQuestion.phrase.toLowerCase()&&(game.logAnswer(!0),game.nextQuestion())},displayQuestion:function(){playAnswerInput.placeholder="",playAnswerInput.value="",playAnswerInput.focus(),definitionDesc.innerHTML=game.currentQuestion.description,game.debug&&(hintDesc.innerHTML=game.currentQuestion.phrase)},updateStats:function(){statsQuestion.innerHTML=game.currentGame.question,statsPoints.innerHTML=game.currentGame.points,statsTimer.innerHTML=game.currentQuestion.timeLeft},logAnswer:function(e){e&&game.addPoints();var t=document.createElement("li");t.classList.add(e?"good":"bad"),t.innerHTML="<strong>"+game.currentQuestion.phrase+"</strong><br />- "+game.currentQuestion.description,answers.insertBefore(t,answers.childNodes[0]),game.updateStats()},enableControls:function(){},disableControls:function(){}},playAnswerInput=document.querySelector(".answer"),definitionDesc=document.querySelector(".definition"),hintDesc=document.querySelector(".hint"),answers=document.querySelector(".answers"),statsPoints=document.querySelector(".points"),statsQuestion=document.querySelector(".question"),statsTimer=document.querySelector(".timer"),ctrlNewGame=document.querySelector(".ctrl-newgame");ctrlNewGame.onclick=function(){return game.new(),!1};var ctrlStop=document.querySelector(".ctrl-stop");ctrlStop.onclick=function(){return game.stop(),!1};var playAnswerForm=document.querySelector(".answer-form");playAnswerForm.onsubmit=function(){return!1};var playSkip=document.querySelector(".skip");playSkip.onclick=function(){return game.skipQuestion(),!1},playAnswerInput.addEventListener("keyup",game.checkAnswer),function(e,t,n,r,s,a){e.GoogleAnalyticsObject=r,e[r]||(e[r]=function(){(e[r].q=e[r].q||[]).push(arguments)}),e[r].l=+new Date,s=t.createElement(n),a=t.getElementsByTagName(n)[0],s.src="//www.google-analytics.com/analytics.js",a.parentNode.insertBefore(s,a)}(window,document,"script","ga"),ga("create","UA-88988916-2","auto"),ga("send","pageview"),game.init();
+'use strict';
+
+var game = {
+
+    // Number of games played
+    count: 0,
+
+    // Game settings
+    settings: {
+        answerTiemLimit: 10
+    },
+
+    // Current game data
+    currentGame: {
+        // Number of points in current game
+        points: 0,
+        question: 0
+    },
+
+    // Current question data
+    currentQuestion: {
+        timeLeft: 0
+    },
+
+    // File with a dictionary
+    questonsFile: 'dict-easy.json',
+
+    // Interval timer handler
+    timer: null,
+
+    // Enable debugging
+    debug: false,
+
+    // Init (bootstrap) the game
+    init: function init() {
+        var endpoint = game.questonsFile;
+
+        fetch(endpoint).then(function (data) {
+            return data.json();
+        }).then(function (data) {
+            game.questions = data;
+            // hide loading
+        });
+    },
+
+    // Start a new game
+    new: function _new() {
+
+        game.count++;
+        game.currentGame = {
+            points: 0,
+            question: 0
+        };
+
+        answers.innerHTML = '';
+        game.updateStats();
+        game.enableControls();
+        game.nextQuestion();
+    },
+
+    // Stop current game
+    stop: function stop() {
+
+        clearInterval(this.timer);
+        game.disableControls();
+    },
+
+    // Run every second, the game engine
+    iterate: function iterate() {
+
+        game.currentQuestion.timeLeft--;
+        game.updateStats();
+        game.revealHint();
+        if (game.currentQuestion.timeLeft < 1) {
+            game.logAnswer(false);
+            game.nextQuestion();
+        }
+    },
+
+    // Slowly reveal a hint
+    revealHint: function revealHint() {
+
+        var answer = game.currentQuestion.phrase;
+        var len = Math.floor(answer.length / game.settings.answerTiemLimit * (game.settings.answerTiemLimit - game.currentQuestion.timeLeft));
+        var stars = new Array(answer.length + 1).join("*");
+
+        // playAnswerInput.placeholder = answer.substr(0, len);
+        playAnswerInput.placeholder = answer.substr(0, len) + stars.slice(len);
+    },
+
+    // Calculate points logic
+    addPoints: function addPoints() {
+        game.currentGame.points += game.currentQuestion.timeLeft;
+    },
+
+    // Select random questions from the questions object
+    nextQuestion: function nextQuestion() {
+
+        var count = 0,
+            result = null;
+
+        for (var phrase in game.questions) {
+            if (Math.random() < 1 / ++count) {
+                result = phrase;
+            }
+        }
+
+        game.currentQuestion = {
+            phrase: result,
+            description: game.questions[result],
+            timeLeft: game.settings.answerTiemLimit
+        };
+
+        clearInterval(game.timer);
+        game.timer = setInterval(game.iterate, 1000);
+
+        game.currentGame.question++;
+
+        game.updateStats();
+        game.displayQuestion();
+    },
+
+    // Log wrong answer and start next question
+    skipQuestion: function skipQuestion() {
+
+        game.logAnswer(false);
+        game.nextQuestion();
+    },
+
+    // Check if entered answer is correct
+    checkAnswer: function checkAnswer() {
+
+        if (playAnswerInput.value.toLowerCase() === game.currentQuestion.phrase.toLowerCase()) {
+            game.logAnswer(true);
+            game.nextQuestion();
+        }
+    },
+
+    // Display a question
+    displayQuestion: function displayQuestion() {
+
+        playAnswerInput.placeholder = '';
+        playAnswerInput.value = '';
+        playAnswerInput.focus();
+
+        definitionDesc.innerHTML = game.currentQuestion.description;
+        if (game.debug) {
+            hintDesc.innerHTML = game.currentQuestion.phrase;
+        }
+    },
+
+    // Update stats panel (time, question, points)
+    updateStats: function updateStats() {
+
+        statsQuestion.innerHTML = game.currentGame.question;
+        statsPoints.innerHTML = game.currentGame.points;
+        statsTimer.innerHTML = game.currentQuestion.timeLeft;
+    },
+
+    // Log asnwer in the answer list
+    logAnswer: function logAnswer(result) {
+
+        if (result) {
+            game.addPoints();
+        }
+
+        var li = document.createElement('li');
+        li.classList.add(result ? 'good' : 'bad');
+        // li.appendChild(document.createTextNode(`${game.currentQuestion.phrase}`));
+        li.innerHTML = '<strong>' + game.currentQuestion.phrase + '</strong><br />- ' + game.currentQuestion.description;
+        answers.insertBefore(li, answers.childNodes[0]);
+
+        game.updateStats();
+    },
+
+    // Enable controls when the game starts
+    enableControls: function enableControls() {},
+
+    // Disable controls when not in the game
+    disableControls: function disableControls() {}
+};
+'use strict';
+
+// Assign ctrls to js consts
+
+var playAnswerInput = document.querySelector('.answer');
+var definitionDesc = document.querySelector('.definition');
+var hintDesc = document.querySelector('.hint');
+var answers = document.querySelector('.answers');
+var statsPoints = document.querySelector('.points');
+var statsQuestion = document.querySelector('.question');
+var statsTimer = document.querySelector('.timer');
+
+// Bind actions to ctrls
+var ctrlNewGame = document.querySelector('.ctrl-newgame');
+ctrlNewGame.onclick = function () {
+    game.new();
+    return false;
+};
+
+var ctrlStop = document.querySelector('.ctrl-stop');
+ctrlStop.onclick = function () {
+    game.stop();
+    return false;
+};
+
+var playAnswerForm = document.querySelector('.answer-form');
+playAnswerForm.onsubmit = function () {
+    return false;
+};
+
+var playSkip = document.querySelector('.skip');
+playSkip.onclick = function () {
+    game.skipQuestion();
+    return false;
+};
+
+playAnswerInput.addEventListener('keyup', game.checkAnswer);
+'use strict';
+
+(function (b, o, i, l, e, r) {
+    b.GoogleAnalyticsObject = l;
+    b[l] || (b[l] = function () {
+        (b[l].q = b[l].q || []).push(arguments);
+    });
+    b[l].l = +new Date();
+    e = o.createElement(i);
+    r = o.getElementsByTagName(i)[0];
+    e.src = '//www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e, r);
+})(window, document, 'script', 'ga');
+ga('create', 'UA-88988916-2', 'auto');
+ga('send', 'pageview');
+'use strict';
+
+// Init the game
+
+game.init();
 //# sourceMappingURL=all.js.map
