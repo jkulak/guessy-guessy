@@ -1,8 +1,12 @@
 # guessy-guessy
 
-The code comes with a simple, static Node.js server - so you can deploy it right away or run it locally. Also, since it is only a HTML + JS + CSS project - you sholud be able run it by double clicking the `src/index.html` file after compiling the `src/sass/main.scss` file to `src/style/main.css`.
+An on-line game, where you have to guess a word based on its definition within given time.
 
-## Run the container
+*Try the live demo → <https://jkulak.github.io/guessy-guessy>*
+
+## Development
+
+The code comes with a simple, static Node.js server - so you can deploy it right away or run it locally.
 
 ### tl;dr
 

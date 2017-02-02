@@ -8,7 +8,7 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 
-const root_dir = (process.env.NODE_ENV === 'production') ? 'build/' : 'src/';
+const root_dir = (process.env.NODE_ENV === 'production') ? 'docs/' : 'src/';
 
 console.log('NODE_ENV', process.env.NODE_ENV);
 console.log('root_dir', root_dir);
