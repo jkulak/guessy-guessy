@@ -18,7 +18,7 @@ ctrlNewGame.onclick = () => {
 
 const ctrlStop = document.querySelector('.ctrl-stop');
 ctrlStop.onclick = () => {
-    game.new();
+    game.stop();
     return false;
 };
 

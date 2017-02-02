@@ -11,7 +11,6 @@ const gulp = require('gulp'),
     concat = require('gulp-concat'),
     sourcemaps = require('gulp-sourcemaps'),
     babel = require('gulp-babel'),
-    minify = require('gulp-minify'),
     uglify = require('gulp-uglify');
 
 // Configuration
@@ -79,20 +78,15 @@ gulp.task('styles', ['sass'], () => {
 });
 
 gulp.task('scripts', () => {
-    return gulp.src(src.scripts + '**/*.js')
+    return gulp.src([src.scripts + 'game.js', src.scripts + '**/*.js'])
         .pipe(sourcemaps.init())
         .pipe(babel({
             presets: ['es2015']
         }))
         .pipe(concat('all.js'))
-        .pipe(minify({
-            ext: {
-                min: '.js'
-            }
-        }))
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(dest.scripts));
+        .pipe(gulp.dest(dest.scripts))
 });
 
 gulp.task('build', ['clean'], () => {
