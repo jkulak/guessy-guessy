@@ -84,7 +84,7 @@ gulp.task('scripts', () => {
             presets: ['es2015']
         }))
         .pipe(concat('all.js'))
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(dest.scripts))
 });
