@@ -9,6 +9,9 @@ body {
 *:before {
   box-sizing: inherit; }
 
+h1 {
+  font-size: 1.4em; }
+
 a {
   font-family: 'Schoolbell', arial, serif;
   color: #34392d;

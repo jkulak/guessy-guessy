@@ -35,12 +35,18 @@ const game = {
     init: function () {
         const endpoint = game.questonsFile;
 
-        fetch(endpoint)
-            .then(data => data.json())
-            .then(data => {
-                game.questions = data;
-                // hide loading
-            });
+        loadJSON(endpoint, (response) => {
+            game.questions = JSON.parse(response);
+        });
+
+        // fetch is not yet supported by iOS nor newest Safari
+        // http://caniuse.com/#search=fetch
+        // fetch(endpoint)
+        //     .then(data => data.json())
+        //     .then(data => {
+        //         game.questions = data;
+        //         // hide loading
+        //     });
     },
 
     // Start a new game
@@ -184,3 +190,17 @@ const game = {
 
     }
 };
+
+function loadJSON(fileName, callback) {
+
+    var xobj = new XMLHttpRequest();
+    xobj.overrideMimeType("application/json");
+    xobj.open("GET", fileName, true);
+    xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == "200") {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            callback(xobj.responseText);
+        }
+    };
+    xobj.send(null);
+}
